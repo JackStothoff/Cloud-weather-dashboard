@@ -1,0 +1,22 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Google credentials
+application_default_credentials.json
+credentials*.json
+service-account*.json
+
+# Private keys
+*.pem
+*.key

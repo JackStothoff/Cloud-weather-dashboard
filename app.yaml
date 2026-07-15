@@ -1,0 +1,11 @@
+runtime: python313
+
+# Start the Flask object named "app" inside main.py.
+entrypoint: gunicorn --bind :$PORT --workers 2 main:app
+
+# F1 is the smallest App Engine instance class.
+instance_class: F1
+
+# Limit the classroom project to one running instance.
+automatic_scaling:
+  max_instances: 1

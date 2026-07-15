@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ title }}</title>
+</head>
+<body>
+    <header>
+        <h1>{{ title }}</h1>
+
+        <p>Search for current weather conditions in a US city.</p>
+    </header>
+
+    <main>
+        <!-- GET places the city in the URL query string. -->
+        <form method="GET" action="/">
+            <label for="city">City name</label>
+
+            <input
+                type="text"
+                id="city"
+                name="city"
+                value="{{ city }}"
+                placeholder="Example: San Antonio"
+                minlength="2"
+                maxlength="100"
+                required
+            >
+
+            <button type="submit">Search Weather</button>
+        </form>
+        {% if error %}
+            <section role="alert" aria-live="polite">
+                <h2>Unable to Load Weather</h2>
+
+                <p>{{ error }}</p>
+
+                <p>
+                    Check the spelling, make sure the city is in the
+                    United States, and try again.
+                </p>
+            </section>
+        {% endif %}
+        <!-- This section appears only after weather data exists. -->
+        {% if weather %}
+            <section>
+                <h2>
+                    {{ weather.name }}
+                    {% if weather.state %}
+                        , {{ weather.state }}
+                    {% endif %}
+                </h2>
+
+                <p>
+                    <strong>Conditions:</strong>
+                    {{ weather.description }}
+                </p>
+
+                <ul>
+                    <li>
+                        <strong>Temperature:</strong>
+
+                        {% if weather.temperature_f is not none %}
+                            {{ weather.temperature_f }} °F
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </li>
+
+                    <li>
+                        <strong>Humidity:</strong>
+
+                        {% if weather.humidity is not none %}
+                            {{ weather.humidity }}%
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </li>
+
+                    <li>
+                        <strong>Wind speed:</strong>
+
+                        {% if weather.wind_mph is not none %}
+                            {{ weather.wind_mph }} mph
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </li>
+                </ul>
+
+                <p>
+                    <small>
+                        Observation station: {{ weather.station }}
+                    </small>
+                </p>
+
+                {% if weather.timestamp %}
+                    <p>
+                        <small>
+                            Observation time: {{ weather.timestamp }}
+                        </small>
+                    </p>
+                {% endif %}
+            </section>
+        {% endif %}
+        {% if forecast %}
+        <section>
+            <h2>Five-Day Forecast</h2>
+
+            <div>
+                {% for period in forecast %}
+                    <article>
+                        <h3>{{ period.name }}</h3>
+
+                        <p>
+                            <strong>Temperature:</strong>
+                            {{ period.temperature }}
+                            °{{ period.temperature_unit }}
+                        </p>
+
+                        <p>
+                            <strong>Conditions:</strong>
+                            {{ period.description }}
+                        </p>
+
+                        <p>
+                            <strong>Chance of precipitation:</strong>
+
+                            {% if
+                                period.precipitation_probability
+                                is not none
+                            %}
+                                {{
+                                    period.precipitation_probability
+                                }}%
+                            {% else %}
+                                Unavailable
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            <strong>Wind:</strong>
+
+                            {% if period.wind_speed %}
+                                {{ period.wind_speed }}
+                                {{ period.wind_direction }}
+                            {% else %}
+                                Unavailable
+                            {% endif %}
+                        </p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+    </main>
+</body>
+</html>
