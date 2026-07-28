@@ -8,21 +8,26 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
     <title>{{ title }}</title>
 </head>
 <body>
-    <header>
+    <header class="page-header">
         <h1>{{ title }}</h1>
 
         <p>Search for current weather conditions in a US city.</p>
     </header>
 
-    <main>
+    <main class="app-shell">
+        <div class="l_sidebar">
         <!-- GET places the city in the URL query string. -->
-        <form method="GET" action="/">
-            <label for="city">City name</label>
+        <form class="search-form" method="GET" action="/">
+            <label class="search-label" for="city">City name</label>
 
             <input
+                class="search-input"
                 type="text"
                 id="city"
                 name="city"
@@ -33,10 +38,10 @@
                 required
             >
 
-            <button type="submit">Search Weather</button>
+            <button class="search-button" type="submit">Search Weather</button>
         </form>
         {% if error %}
-            <section role="alert" aria-live="polite">
+            <section class="status-card" role="alert" aria-live="polite">
                 <h2>Unable to Load Weather</h2>
 
                 <p>{{ error }}</p>
@@ -49,8 +54,8 @@
         {% endif %}
         <!-- This section appears only after weather data exists. -->
         {% if weather %}
-            <section>
-                <h2>
+            <section class="weather-card">
+                <h2 class="weather-title">
                     {{ weather.name }}
                     {% if weather.state %}
                         , {{ weather.state }}
@@ -62,7 +67,7 @@
                     {{ weather.description }}
                 </p>
 
-                <ul>
+                <ul class="weather-details">
                     <li>
                         <strong>Temperature:</strong>
 
@@ -108,14 +113,15 @@
                     </p>
                 {% endif %}
             </section>
+        </div>
         {% endif %}
         {% if forecast %}
-        <section>
+        <section class="forecast-section">
             <h2>Five-Day Forecast</h2>
 
-            <div>
+            <div class="forecast-grid">
                 {% for period in forecast %}
-                    <article>
+                    <article class="forecast-card">
                         <h3>{{ period.name }}</h3>
 
                         <p>
